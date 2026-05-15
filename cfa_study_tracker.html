@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CFA Level I — Study Tracker 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F7F5F0;
+  --surface: #FFFFFF;
+  --surface2: #F0EDE6;
+  --border: #E2DDD4;
+  --text: #1A1714;
+  --text-muted: #7A756C;
+  --text-faint: #B0AA9F;
+  --blue: #1A4F8A; --blue-light: #E3EDF8; --blue-mid: #4A7FC1;
+  --amber: #9B5E0A; --amber-light: #FDF0DC; --amber-mid: #D4902A;
+  --coral: #8A2E1A; --coral-light: #FCEAE6; --coral-mid: #C05030;
+  --green: #1A5C35; --green-light: #E4F2EA; --green-mid: #3A8E5C;
+  --slate: #3A3530; --slate-light: #ECEAE6; --slate-mid: #7A756C;
+  --les: #5C3A9B; --les-light: #EDE8F8; --les-mid: #8A6DC5;
+  --done: #2A7A4A; --done-bg: #E8F5EE;
+  --radius: 8px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+/* TABS */
+.tab-bar { display: flex; background: var(--surface); border-bottom: 1.5px solid var(--text); position: sticky; top: 0; z-index: 100; }
+.tab-btn { flex: 1; padding: 14px 10px; font-family: 'DM Mono', monospace; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; border: none; background: transparent; color: var(--text-muted); transition: all 0.15s; }
+.tab-btn.active { color: var(--text); background: var(--bg); border-bottom: 3px solid var(--text); font-weight: 500; }
+.tab-content { display: none; padding: 1.5rem; max-width: 960px; margin: 0 auto; }
+.tab-content.active { display: block; }
+
+/* HEADER */
+.header { border-bottom: 1.5px solid var(--text); padding-bottom: 1.25rem; margin-bottom: 1.5rem; }
+.logo { font-family: 'DM Serif Display', serif; font-size: 1.75rem; }
+.logo span { color: var(--blue); }
+.header-meta { display: flex; gap: 1.5rem; margin-top: 0.5rem; flex-wrap: wrap; }
+.meta-item { font-size: 0.78rem; color: var(--text-muted); }
+.meta-item strong { color: var(--text); font-weight: 500; }
+
+/* PROGRESS BAR */
+.progress-section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 20px; margin-bottom: 1.5rem; }
+.progress-label { display: flex; justify-content: space-between; font-size: 0.78rem; color: var(--text-muted); margin-bottom: 8px; }
+.progress-label strong { color: var(--text); font-weight: 600; font-size: 0.88rem; }
+.progress-bar-outer { background: var(--surface2); border-radius: 4px; height: 8px; overflow: hidden; }
+.progress-bar-inner { height: 100%; background: linear-gradient(90deg, var(--blue-mid), var(--green-mid)); border-radius: 4px; transition: width 0.4s; }
+.progress-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 14px; }
+.pstat { text-align: center; }
+.pstat-n { font-family: 'DM Serif Display', serif; font-size: 1.4rem; }
+.pstat-l { font-size: 0.7rem; color: var(--text-muted); }
+
+/* PHASE / WEEK BLOCKS */
+.phase { margin-bottom: 1.75rem; }
+.phase-header { display: flex; align-items: center; gap: 10px; margin-bottom: 0.75rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+.phase-bar { width: 4px; height: 20px; border-radius: 2px; flex-shrink: 0; }
+.phase-name { font-family: 'DM Serif Display', serif; font-size: 1rem; }
+.phase-range { margin-left: auto; font-size: 0.72rem; font-family: 'DM Mono', monospace; color: var(--text-faint); }
+.week-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(195px, 1fr)); gap: 10px; }
+.week-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 13px 15px; position: relative; overflow: hidden; cursor: pointer; transition: box-shadow 0.15s, transform 0.1s; }
+.week-card:hover { box-shadow: 0 2px 10px rgba(0,0,0,0.08); transform: translateY(-1px); }
+.week-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+.week-card.c-blue::before { background: var(--blue-mid); }
+.week-card.c-amber::before { background: var(--amber-mid); }
+.week-card.c-coral::before { background: var(--coral-mid); }
+.week-card.c-green::before { background: var(--green-mid); }
+.week-card.c-slate::before { background: var(--slate-mid); }
+.wk-num { font-family: 'DM Mono', monospace; font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-faint); margin-bottom: 2px; }
+.wk-dates { font-size: 0.7rem; color: var(--text-muted); margin-bottom: 6px; }
+.wk-topic { font-size: 0.85rem; font-weight: 600; margin-bottom: 4px; line-height: 1.3; }
+.wk-days { font-size: 0.72rem; color: var(--text-muted); margin-bottom: 8px; }
+.wk-prog { background: var(--surface2); border-radius: 3px; height: 4px; overflow: hidden; }
+.wk-prog-bar { height: 100%; border-radius: 3px; transition: width 0.3s; }
+.tags { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 7px; }
+.tag { font-size: 0.63rem; font-weight: 500; padding: 2px 6px; border-radius: 3px; }
+.tag-quant { background: var(--blue-light); color: var(--blue); }
+.tag-eco   { background: var(--green-light); color: var(--green); }
+.tag-fsa   { background: var(--amber-light); color: var(--amber); }
+.tag-equity{ background: #EDE8F8; color: #4A2A8A; }
+.tag-fi    { background: var(--coral-light); color: var(--coral); }
+.tag-deriv { background: #FDE8F0; color: #7A1A4A; }
+.tag-ai    { background: var(--green-light); color: #1A5C35; }
+.tag-pm    { background: #FCE8EB; color: #7A1A28; }
+.tag-eth   { background: var(--slate-light); color: var(--slate); }
+.tag-rev   { background: var(--slate-light); color: var(--slate); }
+.tag-mock  { background: #2C2820; color: #D4CFC8; }
+.tag-les   { background: var(--les-light); color: var(--les); }
+.tag-sch   { background: var(--blue-light); color: var(--blue); }
+.tag-both  { background: var(--surface2); color: var(--slate); }
+
+/* TRACKER TAB */
+.week-selector { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 1.25rem; }
+.ws-btn { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.06em; padding: 5px 11px; border-radius: 4px; border: 1px solid var(--border); background: var(--surface); color: var(--text-muted); cursor: pointer; transition: all 0.12s; }
+.ws-btn:hover { border-color: var(--text); color: var(--text); }
+.ws-btn.active { background: var(--text); color: var(--bg); border-color: var(--text); }
+.ws-btn.completed { background: var(--done-bg); border-color: var(--done); color: var(--done); }
+
+.day-view { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.day-header { display: flex; align-items: center; padding: 14px 18px; border-bottom: 1px solid var(--border); background: var(--surface2); gap: 12px; }
+.day-nav { background: none; border: 1px solid var(--border); border-radius: 4px; padding: 4px 10px; font-family: 'DM Mono', monospace; font-size: 0.7rem; cursor: pointer; color: var(--text-muted); transition: all 0.12s; }
+.day-nav:hover { border-color: var(--text); color: var(--text); }
+.day-title { flex: 1; text-align: center; }
+.day-title-main { font-family: 'DM Serif Display', serif; font-size: 1.1rem; }
+.day-title-sub { font-size: 0.72rem; color: var(--text-muted); font-family: 'DM Mono', monospace; }
+.day-body { padding: 18px; }
+
+.day-meta { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+.day-badge { font-size: 0.72rem; padding: 4px 10px; border-radius: 20px; font-weight: 500; }
+
+.task-list { display: flex; flex-direction: column; gap: 8px; }
+.task-item { display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px; border: 1px solid var(--border); border-radius: 6px; transition: all 0.15s; cursor: pointer; }
+.task-item:hover { border-color: var(--blue-mid); background: var(--blue-light); }
+.task-item.done { background: var(--done-bg); border-color: var(--done); }
+.task-check { width: 20px; height: 20px; border: 2px solid var(--border); border-radius: 4px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; margin-top: 1px; transition: all 0.15s; }
+.task-item.done .task-check { background: var(--done); border-color: var(--done); }
+.task-check-mark { color: white; font-size: 12px; display: none; }
+.task-item.done .task-check-mark { display: block; }
+.task-content { flex: 1; }
+.task-title { font-size: 0.85rem; font-weight: 500; margin-bottom: 3px; }
+.task-item.done .task-title { text-decoration: line-through; color: var(--text-muted); }
+.task-desc { font-size: 0.75rem; color: var(--text-muted); line-height: 1.5; }
+.task-badge { font-size: 0.65rem; font-weight: 500; padding: 1px 6px; border-radius: 3px; margin-left: 6px; vertical-align: middle; }
+
+.notes-area { margin-top: 16px; }
+.notes-label { font-size: 0.72rem; font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-faint); margin-bottom: 6px; }
+.notes-input { width: 100%; min-height: 70px; border: 1px solid var(--border); border-radius: 6px; padding: 10px 12px; font-family: 'DM Sans', sans-serif; font-size: 0.82rem; color: var(--text); background: var(--bg); resize: vertical; transition: border-color 0.15s; }
+.notes-input:focus { outline: none; border-color: var(--blue-mid); }
+.save-btn { margin-top: 8px; background: var(--text); color: var(--bg); border: none; border-radius: 5px; padding: 8px 18px; font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.06em; cursor: pointer; transition: opacity 0.15s; }
+.save-btn:hover { opacity: 0.8; }
+.save-note { font-size: 0.7rem; color: var(--done); margin-left: 10px; display: none; }
+
+.day-progress { display: flex; align-items: center; gap: 10px; margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--border); }
+.dp-label { font-size: 0.75rem; color: var(--text-muted); flex-shrink: 0; }
+.dp-bar-outer { flex: 1; background: var(--surface2); border-radius: 3px; height: 6px; }
+.dp-bar-inner { height: 100%; background: var(--done); border-radius: 3px; transition: width 0.3s; }
+.dp-pct { font-size: 0.75rem; font-weight: 600; color: var(--done); min-width: 36px; text-align: right; }
+
+/* LES TABLE */
+.les-ref { background: var(--les-light); border: 1px solid #CEC0F0; border-radius: var(--radius); padding: 16px 18px; margin-top: 2rem; }
+.les-ref-title { font-family: 'DM Mono', monospace; font-size: 0.67rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--les-mid); margin-bottom: 10px; }
+.les-table { width: 100%; border-collapse: collapse; font-size: 0.76rem; }
+.les-table th { text-align: left; font-weight: 500; color: var(--les); padding: 4px 8px 7px 0; border-bottom: 1px solid #CEC0F0; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; }
+.les-table td { padding: 6px 8px 6px 0; color: var(--text-muted); border-bottom: 1px solid rgba(0,0,0,0.04); vertical-align: top; line-height: 1.5; }
+.les-table tr:last-child td { border-bottom: none; }
+.les-table td:first-child { font-weight: 500; color: var(--text); width: 30%; }
+
+/* EXPORT / IMPORT */
+.export-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); align-items: center; }
+.export-label { font-size: 0.72rem; font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-faint); margin-right: 4px; }
+.exp-btn { font-family: 'DM Mono', monospace; font-size: 0.68rem; letter-spacing: 0.06em; padding: 6px 14px; border-radius: 5px; border: 1px solid var(--border); background: var(--surface); color: var(--text-muted); cursor: pointer; transition: all 0.12s; }
+.exp-btn:hover { border-color: var(--text); color: var(--text); }
+.exp-btn.primary { background: var(--text); color: var(--bg); border-color: var(--text); }
+.exp-btn.primary:hover { opacity: 0.8; }
+.exp-btn.danger { border-color: #C05030; color: #C05030; }
+.exp-btn.danger:hover { background: var(--coral-light); }
+.exp-status { font-size: 0.7rem; color: var(--done); display: none; margin-left: 4px; }
+
+/* MODAL */
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 999; align-items: center; justify-content: center; }
+.modal-overlay.open { display: flex; }
+.modal { background: var(--surface); border-radius: var(--radius); padding: 24px; width: min(500px, 92vw); box-shadow: 0 8px 40px rgba(0,0,0,0.18); }
+.modal-title { font-family: 'DM Serif Display', serif; font-size: 1.1rem; margin-bottom: 6px; }
+.modal-sub { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 14px; line-height: 1.5; }
+.modal-code { width: 100%; min-height: 90px; font-family: 'DM Mono', monospace; font-size: 0.72rem; border: 1px solid var(--border); border-radius: 5px; padding: 10px 12px; background: var(--surface2); color: var(--text); resize: vertical; }
+.modal-actions { display: flex; gap: 8px; margin-top: 12px; justify-content: flex-end; }
+.modal-err { font-size: 0.72rem; color: var(--coral); margin-top: 6px; display: none; }
+
+/* FOOTER */
+.footer { margin-top: 2.5rem; padding-top: 1rem; border-top: 1px solid var(--border); font-size: 0.7rem; color: var(--text-faint); display: flex; justify-content: space-between; }
+
+@media (max-width: 600px) {
+  .tab-content { padding: 1rem; }
+  .progress-stats { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
+</head>
+<body>
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="showTab('schedule')">📋 Schedule</button>
+  <button class="tab-btn" onclick="showTab('tracker')">✅ Day Tracker</button>
+  <button class="tab-btn" onclick="showTab('reference')">📖 LES Guide</button>
+</div>
+
+<!-- ===================== SCHEDULE TAB ===================== -->
+<div id="tab-schedule" class="tab-content active">
+  <div class="header">
+    <div class="logo">CFA <span>Level I</span> — Study Plan</div>
+    <div class="header-meta">
+      <div class="meta-item"><strong>Start:</strong> May 18, 2026</div>
+      <div class="meta-item"><strong>Schedule:</strong> Weekdays · 2–3 hrs/day</div>
+      <div class="meta-item"><strong>Materials:</strong> Schweser + CFA LES</div>
+    </div>
+  </div>
+
+  <div class="progress-section">
+    <div class="progress-label"><span>Overall Progress</span><strong id="prog-pct">0%</strong></div>
+    <div class="progress-bar-outer"><div class="progress-bar-inner" id="prog-bar" style="width:0%"></div></div>
+    <div class="progress-stats">
+      <div class="pstat"><div class="pstat-n" id="stat-done">0</div><div class="pstat-l">Days done</div></div>
+      <div class="pstat"><div class="pstat-n" id="stat-total">65</div><div class="pstat-l">Total days</div></div>
+      <div class="pstat"><div class="pstat-n" id="stat-tasks">0</div><div class="pstat-l">Tasks done</div></div>
+      <div class="pstat"><div class="pstat-n" id="stat-weeks">15</div><div class="pstat-l">Study weeks</div></div>
+    </div>
+    <div class="export-row">
+      <span class="export-label">Progress</span>
+      <button class="exp-btn primary" onclick="exportProgress()">⬆ Export</button>
+      <button class="exp-btn" onclick="openImport()">⬇ Import</button>
+      <button class="exp-btn danger" onclick="confirmReset()">↺ Reset all</button>
+      <span class="exp-status" id="exp-status">✓ Copied to clipboard!</span>
+    </div>
+  </div>
+
+  <div id="schedule-grid"></div>
+  <div class="footer"><span>CFA Level I · August 2026 · Schweser SchweserNotes + CFA LES</span><span>Updated May 2026</span></div>
+</div>
+
+<!-- ===================== TRACKER TAB ===================== -->
+<div id="tab-tracker" class="tab-content">
+  <div class="header">
+    <div class="logo">Day <span>Tracker</span></div>
+    <div class="header-meta">
+      <div class="meta-item">Click a week · then navigate day by day · check off tasks as you complete them</div>
+    </div>
+  </div>
+
+  <div class="week-selector" id="week-selector"></div>
+
+  <div class="day-view" id="day-view">
+    <div style="padding: 40px; text-align: center; color: var(--text-faint); font-size: 0.85rem;">
+      ← Select a week above to begin tracking
+    </div>
+  </div>
+</div>
+
+<!-- ===================== REFERENCE TAB ===================== -->
+<div id="tab-reference" class="tab-content">
+  <div class="header">
+    <div class="logo">LES <span>vs Schweser</span></div>
+    <div class="header-meta">
+      <div class="meta-item">When to use each platform, by topic</div>
+    </div>
+  </div>
+
+  <div class="les-ref" style="margin-top: 0;">
+    <div class="les-ref-title">Platform usage guide</div>
+    <table class="les-table">
+      <thead><tr><th>Topic</th><th>Primary</th><th>Reasoning</th></tr></thead>
+      <tbody>
+        <tr><td>Ethics (R89–93)</td><td><span class="tag tag-les">LES-first</span></td><td>CFA Institute writes exam Ethics questions from official text. Nuance and case studies are lost in Schweser summaries. Read the Standards of Practice Handbook multiple times in LES.</td></tr>
+        <tr><td>FSA (R27–38)</td><td><span class="tag tag-les">LES-first</span></td><td>Official curriculum has annotated financial statements and worked problems essential for beginners to build intuition. Schweser only for Key Concepts review.</td></tr>
+        <tr><td>Fixed Income (R47–65)</td><td><span class="tag tag-les">LES-first</span></td><td>Calculation-heavy. LES step-by-step examples for bond pricing, duration, convexity, and yield are clearer than Schweser's condensed treatment.</td></tr>
+        <tr><td>Derivatives (R66–75)</td><td><span class="tag tag-both">Both equally</span></td><td>Schweser for conceptual framework; LES for worked pricing problems (forwards, options valuation, put-call parity, binomial model).</td></tr>
+        <tr><td>Quant Methods (R1–11)</td><td><span class="tag tag-sch">Schweser-first</span></td><td>Module-by-module format with quizzes builds quantitative intuition efficiently. Use LES only to clarify specific unclear concepts.</td></tr>
+        <tr><td>Economics (R12–19)</td><td><span class="tag tag-sch">Schweser-first</span></td><td>Descriptive and conceptual. Schweser covers exam-relevant content without the added reading time of the full LES curriculum.</td></tr>
+        <tr><td>Corporate Issuers (R20–26)</td><td><span class="tag tag-sch">Schweser-first</span></td><td>Conceptual. Schweser summaries are sufficient. Low LES value-add for this topic.</td></tr>
+        <tr><td>Equity (R39–46)</td><td><span class="tag tag-sch">Schweser-first</span></td><td>Primarily conceptual and descriptive. Schweser's structure suits exam prep well.</td></tr>
+        <tr><td>Alt Investments (R76–82)</td><td><span class="tag tag-sch">Schweser-first</span></td><td>Descriptive topics. Schweser handles the exam-relevant content well.</td></tr>
+        <tr><td>Portfolio Mgmt (R83–88)</td><td><span class="tag tag-sch">Schweser-first</span></td><td>Mix of conceptual and math. Use LES for CAPM / efficient frontier worked examples only.</td></tr>
+        <tr><td>Mock Exams &amp; Final Review</td><td><span class="tag tag-les">LES-first</span></td><td>LES mock exams are written by CFA Institute and most closely mirror the real exam. Always prioritise LES mocks over third-party versions.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div style="background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--blue-mid); border-radius: 0 var(--radius) var(--radius) 0; padding: 16px 18px; margin-top: 1.25rem;">
+    <div style="font-family:'DM Mono',monospace;font-size:0.67rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-faint);margin-bottom:10px;">Daily study rhythm (2–3 hrs)</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;">
+      <div><strong style="font-size:0.8rem;display:block;margin-bottom:3px;">① 60–75 min · New reading</strong><span style="font-size:0.75rem;color:var(--text-muted)">Schweser module (or LES for Ethics/FSA weeks)</span></div>
+      <div><strong style="font-size:0.8rem;display:block;margin-bottom:3px;">② 30 min · LES practice</strong><span style="font-size:0.75rem;color:var(--text-muted)">End-of-reading questions on the LES platform</span></div>
+      <div><strong style="font-size:0.8rem;display:block;margin-bottom:3px;">③ 20 min · Schweser quiz</strong><span style="font-size:0.75rem;color:var(--text-muted)">Module quiz to reinforce key concepts</span></div>
+      <div><strong style="font-size:0.8rem;display:block;margin-bottom:3px;">④ 15 min · QuickSheet</strong><span style="font-size:0.75rem;color:var(--text-muted)">Daily scan of the 2026 Schweser QuickSheet</span></div>
+    </div>
+  </div>
+
+  <div class="footer" style="margin-top:2rem;"><span>CFA Level I · August 2026 · Schweser SchweserNotes + CFA LES</span></div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+// DATA: Full day-by-day curriculum from Schweser modules
+// ═══════════════════════════════════════════════════════════
+const WEEKS = [
+  {
+    id: 1, label: "Wk 1", color: "blue", phase: "Phase 1 — Foundations",
+    dates: "May 18–22", topic: "Quantitative Methods I", resource: "sch",
+    tags: ["quant"], phaseColor: "#4A7FC1",
+    days: [
+      { date: "Mon May 18", label: "R1 Rates & Returns", tasks: [
+        { id: "1a", title: "Schweser R1 · Module 1.1", desc: "Interest rates, required return, discount rates, risk premiums", res: "sch" },
+        { id: "1b", title: "Schweser R1 · Module 1.2", desc: "Time-weighted vs money-weighted rates of return", res: "sch" },
+        { id: "1c", title: "Schweser R1 · Module 1.3", desc: "Gross return, net return, pre-tax/after-tax, annualized returns", res: "sch" },
+        { id: "1d", title: "LES · R1 End-of-reading questions", desc: "Complete all LES practice questions for Reading 1", res: "les" },
+        { id: "1e", title: "QuickSheet scan", desc: "Quantitative Methods section — returns & rates formulas", res: "qs" },
+      ]},
+      { date: "Tue May 19", label: "R2 Time Value of Money", tasks: [
+        { id: "2a", title: "Schweser R2 · Module 2.1", desc: "PV of fixed-income and equity instruments, DCF valuation", res: "sch" },
+        { id: "2b", title: "Schweser R2 · Module 2.2", desc: "Implied returns, cash flow additivity, no-arbitrage condition", res: "sch" },
+        { id: "2c", title: "LES · R2 End-of-reading questions", desc: "TVM practice — PV/FV, annuities, perpetuities", res: "les" },
+        { id: "2d", title: "QuickSheet · TVM formulas", desc: "Review TVM formulas on QuickSheet", res: "qs" },
+      ]},
+      { date: "Wed May 20", label: "R3 Statistical Measures", tasks: [
+        { id: "3a", title: "Schweser R3 · Module 3.1", desc: "Mean, median, mode; variance, standard deviation, target downside deviation", res: "sch" },
+        { id: "3b", title: "Schweser R3 · Module 3.2", desc: "Skewness, kurtosis, correlation and covariance", res: "sch" },
+        { id: "3c", title: "LES · R3 End-of-reading questions", desc: "Statistical calculations practice", res: "les" },
+        { id: "3d", title: "QuickSheet · Stats formulas", desc: "Variance, std dev, CV, target semideviation review", res: "qs" },
+      ]},
+      { date: "Thu May 21", label: "R4 Probability Trees", tasks: [
+        { id: "4a", title: "Schweser R4 · Module 4.1", desc: "Probability models, conditional expectations, Bayes' formula", res: "sch" },
+        { id: "4b", title: "LES · R4 End-of-reading questions", desc: "Probability and Bayes' formula practice", res: "les" },
+        { id: "4c", title: "Schweser R5 · Module 5.1", desc: "Portfolio expected return, variance of a 2-asset portfolio, covariance", res: "sch" },
+        { id: "4d", title: "LES · R5 End-of-reading questions", desc: "Portfolio mathematics practice questions", res: "les" },
+      ]},
+      { date: "Fri May 22", label: "Weekly Review", tasks: [
+        { id: "5a", title: "Review R1–R5 module quizzes", desc: "Redo any questions scored below 70% this week", res: "sch" },
+        { id: "5b", title: "LES · Topic Quiz: Quant (partial)", desc: "Take first portion of Quant topic quiz on LES", res: "les" },
+        { id: "5c", title: "QuickSheet · Full Quant section", desc: "Read through entire Quant section of QuickSheet", res: "qs" },
+        { id: "5d", title: "Note weak areas", desc: "Write down any concepts still unclear for later revisit", res: "both" },
+      ]},
+    ]
+  },
+  {
+    id: 2, label: "Wk 2", color: "blue", phase: "Phase 1 — Foundations",
+    dates: "May 25–29", topic: "Quantitative Methods II", resource: "both",
+    tags: ["quant"], phaseColor: "#4A7FC1",
+    days: [
+      { date: "Mon May 25", label: "R6–R7 Simulation & Inference", tasks: [
+        { id: "6a", title: "Schweser R6 · Module 6.1", desc: "Lognormal distributions, Monte Carlo simulation, historical simulation", res: "sch" },
+        { id: "6b", title: "Schweser R7 · Module 7.1", desc: "Sampling techniques (simple random, stratified, cluster), central limit theorem, standard error", res: "sch" },
+        { id: "6c", title: "LES · R6–R7 End-of-reading questions", desc: "Simulation and sampling practice", res: "les" },
+      ]},
+      { date: "Tue May 26", label: "R8 Hypothesis Testing", tasks: [
+        { id: "7a", title: "Schweser R8 · Module 8.1", desc: "Null vs alternative hypothesis, Type I & II errors, significance level, p-value", res: "sch" },
+        { id: "7b", title: "Schweser R8 · Module 8.2", desc: "t-tests, z-tests, chi-square tests, F-tests", res: "sch" },
+        { id: "7c", title: "LES · R8 worked examples", desc: "Work through LES hypothesis testing examples for calculation practice", res: "les" },
+        { id: "7d", title: "LES · R8 End-of-reading questions", desc: "Hypothesis testing practice questions", res: "les" },
+      ]},
+      { date: "Wed May 27", label: "R9–R10 Tests & Regression", tasks: [
+        { id: "8a", title: "Schweser R9 · Module 9.1", desc: "Parametric and non-parametric tests for independence, Spearman rank correlation", res: "sch" },
+        { id: "8b", title: "Schweser R10 · Module 10.1", desc: "Simple linear regression basics: slope, intercept, ANOVA", res: "sch" },
+        { id: "8c", title: "LES · R10 · Modules 10.2–10.3", desc: "LES for ANOVA, goodness-of-fit, predicted values, functional forms — LES examples are clearer", res: "les" },
+        { id: "8d", title: "LES · R9–R10 questions", desc: "Practice questions on regression and independence tests", res: "les" },
+      ]},
+      { date: "Thu May 28", label: "R11 Fintech / Big Data", tasks: [
+        { id: "9a", title: "Schweser R11 · Module 11.1", desc: "Fintech, Big Data (volume/velocity/variety), AI, machine learning, neural networks, supervised vs unsupervised learning", res: "sch" },
+        { id: "9b", title: "LES · R11 End-of-reading questions", desc: "Fintech and Big Data practice questions", res: "les" },
+        { id: "9c", title: "QuickSheet · Quant — full review", desc: "Re-read all Quant formulas on QuickSheet before moving to Economics", res: "qs" },
+      ]},
+      { date: "Fri May 29", label: "Quant Review + Topic Quiz", tasks: [
+        { id: "10a", title: "LES · Quant Topic Quiz", desc: "Full Quantitative Methods topic quiz on LES — aim for 70%+", res: "les" },
+        { id: "10b", title: "Review weak quant modules", desc: "Revisit any modules scored below 70% in Schweser quizzes this week", res: "sch" },
+        { id: "10c", title: "QuickSheet · Quant formulas", desc: "Final pass through Quant section of QuickSheet", res: "qs" },
+      ]},
+    ]
+  },
+  {
+    id: 3, label: "Wk 3", color: "blue", phase: "Phase 1 — Foundations",
+    dates: "Jun 1–5", topic: "Economics I", resource: "sch",
+    tags: ["eco"], phaseColor: "#4A7FC1",
+    days: [
+      { date: "Mon Jun 1", label: "R12 Market Structures", tasks: [
+        { id: "11a", title: "Schweser R12 · Module 12.1", desc: "Breakeven & shutdown points, economies/diseconomies of scale, perfect competition", res: "sch" },
+        { id: "11b", title: "Schweser R12 · Module 12.2", desc: "Monopolistic competition, oligopoly (Cournot, Stackelberg, Nash equilibrium)", res: "sch" },
+        { id: "11c", title: "Schweser R12 · Module 12.3", desc: "Identifying market structures, concentration ratios, HHI", res: "sch" },
+        { id: "11d", title: "LES · R12 End-of-reading questions", desc: "Market structure practice questions", res: "les" },
+      ]},
+      { date: "Tue Jun 2", label: "R13–R14 Business Cycles & Fiscal Policy", tasks: [
+        { id: "12a", title: "Schweser R13 · Module 13.1", desc: "Business cycle phases (expansion, peak, contraction, trough), credit cycles, economic indicators", res: "sch" },
+        { id: "12b", title: "Schweser R14 · Module 14.1", desc: "Fiscal policy objectives, roles, national debt, budget deficit/surplus", res: "sch" },
+        { id: "12c", title: "Schweser R14 · Module 14.2", desc: "Fiscal policy tools (spending, taxes), multiplier effects, implementation challenges", res: "sch" },
+        { id: "12d", title: "LES · R13–R14 End-of-reading questions", desc: "Business cycles and fiscal policy practice", res: "les" },
+      ]},
+      { date: "Wed Jun 3", label: "R15 Monetary Policy", tasks: [
+        { id: "13a", title: "Schweser R15 · Module 15.1", desc: "Central bank objectives and tools: open market ops, reserve requirements, policy rate", res: "sch" },
+        { id: "13b", title: "Schweser R15 · Module 15.2", desc: "Monetary transmission mechanism, inflation targeting, exchange rate targeting, limitations", res: "sch" },
+        { id: "13c", title: "LES · R15 End-of-reading questions", desc: "Monetary policy practice questions", res: "les" },
+        { id: "13d", title: "QuickSheet · Economics section", desc: "First pass through Economics formulas on QuickSheet", res: "qs" },
+      ]},
+      { date: "Thu Jun 4", label: "R16–R17 Geopolitics & Trade", tasks: [
+        { id: "14a", title: "Schweser R16 · Module 16.1", desc: "Geopolitics: cooperation vs competition, World Bank, IMF, WTO, geopolitical risk, soft vs hard power", res: "sch" },
+        { id: "14b", title: "Schweser R17 · Module 17.1", desc: "Benefits of trade, tariffs, quotas, export subsidies, trading blocs, common markets", res: "sch" },
+        { id: "14c", title: "LES · R16–R17 End-of-reading questions", desc: "Geopolitics and trade practice questions", res: "les" },
+      ]},
+      { date: "Fri Jun 5", label: "R18–R19 FX & Exchange Rates", tasks: [
+        { id: "15a", title: "Schweser R18 · Module 18.1–18.2", desc: "FX market, nominal vs real exchange rates, exchange rate regimes, capital restrictions", res: "sch" },
+        { id: "15b", title: "Schweser R19 · Module 19.1", desc: "Currency cross-rates, spot vs forward rates, covered interest rate parity, forward premium/discount", res: "sch" },
+        { id: "15c", title: "LES · R18–R19 End-of-reading questions", desc: "Exchange rate calculations practice — key exam topic", res: "les" },
+        { id: "15d", title: "QuickSheet · Economics formulas", desc: "Review Economics formulas (exchange rate, multiplier) on QuickSheet", res: "qs" },
+      ]},
+    ]
+  },
+  {
+    id: 4, label: "Wk 4", color: "blue", phase: "Phase 1 — Foundations",
+    dates: "Jun 8–13", topic: "Corporate Issuers + Book 1 Review", resource: "sch",
+    tags: ["eco"], phaseColor: "#4A7FC1",
+    days: [
+      { date: "Mon Jun 8", label: "R20–R22 Corporate Issuers I", tasks: [
+        { id: "16a", title: "Schweser R20 · Module 20.1", desc: "Sole proprietorship, partnership, corporation; public vs private issuers, ownership structures", res: "sch" },
+        { id: "16b", title: "Schweser R21 · Module 21.1", desc: "Stakeholders (shareholders, creditors, employees, customers), ESG factors", res: "sch" },
+        { id: "16c", title: "Schweser R22 · Module 22.1", desc: "Principal-agent conflicts, board structures, corporate governance mechanisms and risks", res: "sch" },
+        { id: "16d", title: "LES · R20–R22 End-of-reading questions", desc: "Corporate issuers and governance practice", res: "les" },
+      ]},
+      { date: "Tue Jun 9", label: "R23–R24 Working Capital & Capital Investments", tasks: [
+        { id: "17a", title: "Schweser R23 · Module 23.1", desc: "Cash conversion cycle, liquidity ratios, working capital management methods", res: "sch" },
+        { id: "17b", title: "Schweser R24 · Module 24.1", desc: "Types of capital investments, NPV, IRR, ROIC calculations", res: "sch" },
+        { id: "17c", title: "Schweser R24 · Module 24.2", desc: "Capital allocation principles, pitfalls, real options (timing, abandonment, expansion)", res: "sch" },
+        { id: "17d", title: "LES · R23–R24 End-of-reading questions", desc: "Working capital and capital allocation practice", res: "les" },
+      ]},
+      { date: "Wed Jun 10", label: "R25–R26 Capital Structure & Business Models", tasks: [
+        { id: "18a", title: "Schweser R25 · Module 25.1", desc: "WACC calculation, debt vs equity costs, after-tax cost of debt", res: "sch" },
+        { id: "18b", title: "Schweser R25 · Module 25.2", desc: "Modigliani-Miller propositions (with/without taxes), static tradeoff theory, optimal capital structure", res: "sch" },
+        { id: "18c", title: "Schweser R26 · Module 26.1", desc: "Business model features: value proposition, pricing models, network effects, platform models", res: "sch" },
+        { id: "18d", title: "LES · R25–R26 End-of-reading questions", desc: "Capital structure and business models practice", res: "les" },
+      ]},
+      { date: "Thu Jun 11", label: "Book 1 Topic Quizzes", tasks: [
+        { id: "19a", title: "LES · Economics Topic Quiz", desc: "Full Economics topic quiz on LES — aim for 70%+", res: "les" },
+        { id: "19b", title: "LES · Corporate Issuers Topic Quiz", desc: "Full Corporate Issuers topic quiz on LES", res: "les" },
+        { id: "19c", title: "Review missed questions", desc: "Note topics that need more attention from Wks 3–4", res: "both" },
+      ]},
+      { date: "Fri Jun 12", label: "Book 1 Full Review", tasks: [
+        { id: "20a", title: "QuickSheet · Book 1 full read", desc: "Read all of Quant, Economics, and Corporate Issuers on QuickSheet", res: "qs" },
+        { id: "20b", title: "Weak topic revisit (Schweser)", desc: "Re-read modules you struggled with this phase", res: "sch" },
+        { id: "20c", title: "Ethics preview (LES)", desc: "Read Ethics Standard I(A)–I(B) in LES — begin building familiarity now", res: "les" },
+      ]},
+    ]
+  },
+  {
+    id: 5, label: "Wk 5", color: "amber", phase: "Phase 2 — Core Finance",
+    dates: "Jun 16–20", topic: "Financial Statement Analysis I", resource: "les",
+    tags: ["fsa"], phaseColor: "#D4902A",
+    days: [
+      { date: "Mon Jun 16", label: "R27–R28 FSA Intro & Income Statements", tasks: [
+        { id: "21a", title: "LES · R27 Introduction to FSA", desc: "Financial statement roles, regulatory filings, IFRS vs US GAAP framework overview — read in LES", res: "les" },
+        { id: "21b", title: "LES · R28 · Modules 28.1–28.2", desc: "Revenue recognition (IFRS 15), expense recognition, accruals, depreciation methods", res: "les" },
+        { id: "21c", title: "Schweser R27–R28 Key Concepts", desc: "Review Key Concepts and module quiz answers in Schweser to reinforce", res: "sch" },
+      ]},
+      { date: "Tue Jun 17", label: "R28 cont. + R29 Balance Sheets", tasks: [
+        { id: "22a", title: "LES · R28 · Modules 28.3–28.5", desc: "Nonrecurring items, EPS (basic and diluted), common-size income statements, financial ratios", res: "les" },
+        { id: "22b", title: "LES · R29 · Modules 29.1–29.2", desc: "Intangible assets, goodwill, marketable securities, common-size balance sheets — work through all exhibits", res: "les" },
+        { id: "22c", title: "LES · R28–R29 End-of-reading questions", desc: "FSA income statement and balance sheet practice questions", res: "les" },
+      ]},
+      { date: "Wed Jun 18", label: "R30–R31 Cash Flow Statements", tasks: [
+        { id: "23a", title: "LES · R30 · Modules 30.1–30.2", desc: "Cash flow intro, direct method CFO, indirect method CFO — work through full LES examples with exhibits", res: "les" },
+        { id: "23b", title: "LES · R30 · Module 30.3", desc: "Investing & financing cash flows, IFRS vs US GAAP classification differences", res: "les" },
+        { id: "23c", title: "LES · R31 · Module 31.1", desc: "Evaluating and converting cash flow statements, free cash flow calculations", res: "les" },
+        { id: "23d", title: "LES · R30–R31 End-of-reading questions", desc: "Cash flow statement practice questions", res: "les" },
+      ]},
+      { date: "Thu Jun 19", label: "R32 Analysis of Inventories", tasks: [
+        { id: "24a", title: "LES · R32 · Modules 32.1–32.2", desc: "Inventory measurement, FIFO, LIFO, weighted average; inflation impact on FIFO vs LIFO gross profit and tax", res: "les" },
+        { id: "24b", title: "LES · R32 · Module 32.3", desc: "Inventory presentation, disclosures, inventory turnover ratio", res: "les" },
+        { id: "24c", title: "LES · R32 End-of-reading questions", desc: "Inventory analysis practice — high exam relevance", res: "les" },
+        { id: "24d", title: "Schweser R32 Key Concepts", desc: "Cross-check with Schweser Key Concepts for exam-focused summary", res: "sch" },
+      ]},
+      { date: "Fri Jun 20", label: "FSA Week 1 Review", tasks: [
+        { id: "25a", title: "Review R27–R32 weak areas", desc: "Go back to any LES readings you found difficult this week", res: "les" },
+        { id: "25b", title: "Schweser R27–R32 module quizzes", desc: "Complete any remaining Schweser module quizzes for R27–R32", res: "sch" },
+        { id: "25c", title: "QuickSheet · FSA section", desc: "First read of FSA-related content on QuickSheet", res: "qs" },
+      ]},
+    ]
+  },
+  {
+    id: 6, label: "Wk 6", color: "amber", phase: "Phase 2 — Core Finance",
+    dates: "Jun 23–27", topic: "Financial Statement Analysis II", resource: "les",
+    tags: ["fsa"], phaseColor: "#D4902A",
+    days: [
+      { date: "Mon Jun 23", label: "R33–R34 Long-Term Assets & Liabilities", tasks: [
+        { id: "26a", title: "LES · R33 · Modules 33.1–33.3", desc: "Intangible long-lived assets, capitalisation vs expensing, impairment, derecognition, disclosures", res: "les" },
+        { id: "26b", title: "LES · R34 · Modules 34.1–34.2", desc: "Lease accounting (finance vs operating, IFRS vs GAAP), deferred compensation, pension disclosures", res: "les" },
+        { id: "26c", title: "LES · R33–R34 End-of-reading questions", desc: "Long-term assets and liabilities practice questions", res: "les" },
+      ]},
+      { date: "Tue Jun 24", label: "R35 Income Taxes", tasks: [
+        { id: "27a", title: "LES · R35 · Module 35.1", desc: "Accounting profit vs taxable income, permanent vs temporary differences", res: "les" },
+        { id: "27b", title: "LES · R35 · Modules 35.2–35.3", desc: "Deferred tax assets and liabilities, effective vs statutory tax rates, disclosures", res: "les" },
+        { id: "27c", title: "LES · R35 End-of-reading questions", desc: "Income tax analysis practice — commonly tested", res: "les" },
+        { id: "27d", title: "Schweser R35 Key Concepts + quiz", desc: "Consolidate with Schweser's concise summary", res: "sch" },
+      ]},
+      { date: "Wed Jun 25", label: "R36–R37 Reporting Quality & Ratios", tasks: [
+        { id: "28a", title: "LES · R36 · Modules 36.1–36.3", desc: "Reporting quality levels, accounting choices, estimates, warning signs (Beneish M-score, etc.)", res: "les" },
+        { id: "28b", title: "LES · R37 · Modules 37.1–37.4", desc: "Key financial ratios (liquidity, solvency, profitability, efficiency), DuPont analysis (3-factor and 5-factor)", res: "les" },
+        { id: "28c", title: "LES · R37 · Module 37.5", desc: "Industry-specific ratios (banking, insurance, etc.)", res: "les" },
+        { id: "28d", title: "LES · R36–R37 End-of-reading questions", desc: "Reporting quality and ratio analysis practice", res: "les" },
+      ]},
+      { date: "Thu Jun 26", label: "R38 Financial Statement Modeling", tasks: [
+        { id: "29a", title: "LES · R38 · Module 38.1", desc: "Building integrated financial models, forecasting revenue and expenses, linking statements", res: "les" },
+        { id: "29b", title: "LES · R38 End-of-reading questions", desc: "Financial modeling practice questions", res: "les" },
+        { id: "29c", title: "Schweser R38 Key Concepts", desc: "Review Schweser's summary for modeling framework", res: "sch" },
+      ]},
+      { date: "Fri Jun 27", label: "FSA Topic Quiz + Review", tasks: [
+        { id: "30a", title: "LES · FSA Topic Quiz", desc: "Full FSA topic quiz on LES — aim for 70%+ given LES-first approach this week", res: "les" },
+        { id: "30b", title: "QuickSheet · FSA section", desc: "Full read of FSA-related formulas and ratios on QuickSheet", res: "qs" },
+        { id: "30c", title: "Ethics preview (LES)", desc: "Read Ethics Standard I(C)–I(E) in LES to continue ongoing Ethics review", res: "les" },
+      ]},
+    ]
+  },
+  {
+    id: 7, label: "Wk 7", color: "amber", phase: "Phase 2 — Core Finance",
+    dates: "Jun 30–Jul 4", topic: "Equity Investments I", resource: "sch",
+    tags: ["equity"], phaseColor: "#D4902A",
+    days: [
+      { date: "Mon Jun 30", label: "R39 Market Organisation", tasks: [
+        { id: "31a", title: "Schweser R39 · Module 39.1", desc: "Functions of financial system, asset classifications, securities, currencies, derivatives, intermediaries", res: "sch" },
+        { id: "31b", title: "Schweser R39 · Module 39.2", desc: "Long/short positions, leverage ratio, margin calculations, margin call price", res: "sch" },
+        { id: "31c", title: "Schweser R39 · Module 39.3", desc: "Order types (market, limit, stop), execution instructions, quote-driven vs order-driven markets", res: "sch" },
+        { id: "31d", title: "LES · R39 End-of-reading questions", desc: "Market structure and order types practice", res: "les" },
+      ]},
+      { date: "Tue Jul 1", label: "R40–R41 Indexes & Market Efficiency", tasks: [
+        { id: "32a", title: "Schweser R40 · Module 40.1", desc: "Index construction, price-weighted, value-weighted, equal-weighted methods, rebalancing", res: "sch" },
+        { id: "32b", title: "Schweser R40 · Module 40.2", desc: "Uses of indexes, equity/fixed income/alternative indexes", res: "sch" },
+        { id: "32c", title: "Schweser R41 · Module 41.1", desc: "Market efficiency forms (weak, semi-strong, strong), anomalies, behavioral finance", res: "sch" },
+        { id: "32d", title: "LES · R40–R41 End-of-reading questions", desc: "Indexes and market efficiency practice questions", res: "les" },
+      ]},
+      { date: "Wed Jul 2", label: "R42–R43 Equity Securities & Company Analysis", tasks: [
+        { id: "33a", title: "Schweser R42 · Module 42.1–42.2", desc: "Common vs preferred shares, convertibles, warrants; foreign equity (ADRs, GDRs), equity risk", res: "sch" },
+        { id: "33b", title: "Schweser R43 · Module 43.1–43.2", desc: "Equity research reports, revenue analysis, profitability analysis, capital structure assessment", res: "sch" },
+        { id: "33c", title: "LES · R42–R43 End-of-reading questions", desc: "Equity securities practice questions", res: "les" },
+      ]},
+      { date: "Thu Jul 3", label: "R44–R45 Industry & Company Forecasting", tasks: [
+        { id: "34a", title: "Schweser R44 · Module 44.1–44.2", desc: "Industry lifecycle, Porter's Five Forces, industry structure, competitive positioning analysis", res: "sch" },
+        { id: "34b", title: "Schweser R45 · Module 45.1", desc: "Forecasting revenue, costs, and margins; choosing forecast horizons", res: "sch" },
+        { id: "34c", title: "LES · R44–R45 End-of-reading questions", desc: "Industry and forecasting practice questions", res: "les" },
+      ]},
+      { date: "Fri Jul 4", label: "R46 Equity Valuation Review", tasks: [
+        { id: "35a", title: "Schweser R46 · Modules 46.1–46.3", desc: "Dividends (stock splits, buybacks), DDM (Gordon growth model), P/E, P/B, P/S, EV/EBITDA", res: "sch" },
+        { id: "35b", title: "LES · R46 End-of-reading questions", desc: "Equity valuation practice — DDM and relative valuation calculations", res: "les" },
+        { id: "35c", title: "QuickSheet · Equity section", desc: "Review Equity formulas on QuickSheet", res: "qs" },
+      ]},
+    ]
+  },
+  {
+    id: 8, label: "Wk 8", color: "amber", phase: "Phase 2 — Core Finance",
+    dates: "Jul 7–11", topic: "Equity II + Book 2 Review", resource: "sch",
+    tags: ["equity"], phaseColor: "#D4902A",
+    days: [
+      { date: "Mon Jul 7", label: "Equity Deep Dive", tasks: [
+        { id: "36a", title: "LES · Equity Topic Quiz", desc: "Full Equity Investments topic quiz on LES", res: "les" },
+        { id: "36b", title: "Review weak equity modules", desc: "Revisit R39–R46 modules with lowest quiz scores", res: "sch" },
+        { id: "36c", title: "Ethics preview (LES)", desc: "Read Ethics Standard II in LES (Material Nonpublic Info & Market Manipulation)", res: "les" },
+      ]},
+      { date: "Tue Jul 8", label: "Book 2 Full Review", tasks: [
+        { id: "37a", title: "QuickSheet · FSA + Equity", desc: "Full read of FSA and Equity sections on QuickSheet", res: "qs" },
+        { id: "37b", title: "Weak FSA topics revisit", desc: "Re-read any FSA modules you found difficult", res: "les" },
+        { id: "37c", title: "Schweser practice questions", desc: "Additional module quizzes for any remaining FSA or Equity weak spots", res: "sch" },
+      ]},
+      { date: "Wed Jul 9", label: "Book 2 Topic Quizzes", tasks: [
+        { id: "38a", title: "LES · FSA Topic Quiz (retake if needed)", desc: "If scored below 70% last week, retake the FSA topic quiz", res: "les" },
+        { id: "38b", title: "LES · Equity Topic Quiz", desc: "Full Equity topic quiz on LES if not done Mon", res: "les" },
+        { id: "38c", title: "Review and note weak areas", desc: "Prioritise topics to revisit in final review weeks", res: "both" },
+      ]},
+      { date: "Thu Jul 10", label: "Bridge Day — Preview Fixed Income", tasks: [
+        { id: "39a", title: "LES · R47 preview read", desc: "Read R47 Fixed-Income Instrument Features in LES — orient yourself before diving in", res: "les" },
+        { id: "39b", title: "QuickSheet · Fixed Income overview", desc: "Read the Fixed Income section of QuickSheet to preview concepts", res: "qs" },
+        { id: "39c", title: "Ethics review (LES)", desc: "Read Ethics Standard III(A–B) in LES — Loyalty, Prudence & Care; Fair Dealing", res: "les" },
+      ]},
+      { date: "Fri Jul 11", label: "Buffer / Catch-Up Day", tasks: [
+        { id: "40a", title: "Catch up on any unfinished readings", desc: "Complete any readings from Weeks 5–8 not yet finished", res: "both" },
+        { id: "40b", title: "QuickSheet · Full Book 1+2 scan", desc: "Quick pass through all Book 1 and Book 2 formulas on QuickSheet", res: "qs" },
+      ]},
+    ]
+  },
+  {
+    id: 9, label: "Wk 9", color: "coral", phase: "Phase 3 — Markets & Instruments",
+    dates: "Jul 14–18", topic: "Fixed Income I", resource: "les",
+    tags: ["fi"], phaseColor: "#C05030",
+    days: [
+      { date: "Mon Jul 14", label: "R47–R49 FI Features & Issuance", tasks: [
+        { id: "41a", title: "LES · R47 · Module 47.1", desc: "Bond features: face value, coupon rate, maturity, indenture, affirmative/negative covenants, embedded options", res: "les" },
+        { id: "41b", title: "LES · R48 · Module 48.1", desc: "Cash flow structures: bullet, amortising, step-up; callables, putables, convertibles", res: "les" },
+        { id: "41c", title: "LES · R49 · Module 49.1", desc: "FI market segments, primary vs secondary markets, bond indexes", res: "les" },
+        { id: "41d", title: "LES · R47–R49 End-of-reading questions", desc: "Fixed income features practice", res: "les" },
+      ]},
+      { date: "Tue Jul 15", label: "R50–R52 FI Markets & Valuation", tasks: [
+        { id: "42a", title: "LES · R50 · Module 50.1", desc: "Short-term corporate funding (commercial paper, repos), investment-grade vs high-yield funding", res: "les" },
+        { id: "42b", title: "LES · R51 · Module 51.1", desc: "Sovereign, non-sovereign, quasi-government, supranational bond issuance and trading", res: "les" },
+        { id: "42c", title: "LES · R52 · Module 52.1", desc: "Bond pricing using YTM, pricing between coupon dates, price-yield relationship, matrix pricing — work all examples", res: "les" },
+        { id: "42d", title: "LES · R50–R52 End-of-reading questions", desc: "Bond markets and valuation practice — critical for exam", res: "les" },
+      ]},
+      { date: "Wed Jul 16", label: "R53–R54 Yield Measures", tasks: [
+        { id: "43a", title: "LES · R53 · Module 53.1", desc: "YTM, current yield, yield to call, yield to worst, z-spread, OAS — work through all LES calculations", res: "les" },
+        { id: "43b", title: "LES · R54 · Module 54.1", desc: "Floating-rate bonds: LIBOR/SOFR, discount margin; money market yield measures (bank discount, HPR, EAY)", res: "les" },
+        { id: "43c", title: "LES · R53–R54 End-of-reading questions", desc: "Yield measure calculations practice", res: "les" },
+        { id: "43d", title: "Schweser R52–R54 Key Concepts", desc: "Consolidate with Schweser formulas and key concepts review", res: "sch" },
+      ]},
+      { date: "Thu Jul 17", label: "R55–R56 Term Structure & Duration Intro", tasks: [
+        { id: "44a", title: "LES · R55 · Module 55.1", desc: "Spot rates, par rates, forward rates; bootstrapping; spot curve, par curve, forward curve relationships", res: "les" },
+        { id: "44b", title: "LES · R56 · Module 56.1", desc: "Sources of return from FI, Macaulay duration definition and calculation, holding period return vs horizon", res: "les" },
+        { id: "44c", title: "LES · R55–R56 End-of-reading questions", desc: "Term structure and return calculations practice", res: "les" },
+      ]},
+      { date: "Fri Jul 18", label: "FI Week 1 Review", tasks: [
+        { id: "45a", title: "Schweser R47–R56 module quizzes", desc: "Complete module quizzes for R47–R56 in Schweser", res: "sch" },
+        { id: "45b", title: "QuickSheet · Fixed Income formulas", desc: "First thorough read of FI section on QuickSheet", res: "qs" },
+        { id: "45c", title: "Ethics review (LES)", desc: "Read Ethics Standard III(C–E) in LES", res: "les" },
+      ]},
+    ]
+  },
+  {
+    id: 10, label: "Wk 10", color: "coral", phase: "Phase 3 — Markets & Instruments",
+    dates: "Jul 21–25", topic: "Fixed Income II + Derivatives Intro", resource: "both",
+    tags: ["fi", "deriv"], phaseColor: "#C05030",
+    days: [
+      { date: "Mon Jul 21", label: "R57–R58 Duration & Convexity", tasks: [
+        { id: "46a", title: "LES · R57 · Module 57.1", desc: "Modified duration, money duration, PVBP — calculate for each bond type, effect of maturity/coupon/yield", res: "les" },
+        { id: "46b", title: "LES · R58 · Module 58.1", desc: "Convexity calculation, convexity adjustment, percentage price change formula, portfolio duration/convexity", res: "les" },
+        { id: "46c", title: "LES · R57–R58 End-of-reading questions", desc: "Duration and convexity calculations practice", res: "les" },
+      ]},
+      { date: "Tue Jul 22", label: "R59–R62 Risk Measures & Credit", tasks: [
+        { id: "47a", title: "LES · R59 · Module 59.1", desc: "Effective duration/convexity for bonds with embedded options; key rate duration; empirical vs analytical duration", res: "les" },
+        { id: "47b", title: "Schweser R60 · Module 60.1", desc: "Credit risk: probability of default, loss given default, expected loss; credit rating limitations", res: "sch" },
+        { id: "47c", title: "Schweser R61–R62 · Modules 61.1, 62.1", desc: "Sovereign credit analysis; corporate credit analysis: qualitative factors, financial ratios, seniority rankings", res: "sch" },
+        { id: "47d", title: "LES · R59–R62 End-of-reading questions", desc: "Risk measures and credit analysis practice", res: "les" },
+      ]},
+      { date: "Wed Jul 23", label: "R63–R65 Securitisation & MBS", tasks: [
+        { id: "48a", title: "Schweser R63 · Module 63.1", desc: "Securitization benefits, SPE/SPV structure, parties and roles, waterfall structures", res: "sch" },
+        { id: "48b", title: "Schweser R64 · Module 64.1", desc: "Covered bonds, credit enhancement (internal/external), CDOs, auto ABS, credit card ABS", res: "sch" },
+        { id: "48c", title: "Schweser R65 · Module 65.1", desc: "Mortgage pass-throughs, CMOs (sequential pay, PAC tranches), prepayment risk, CMBS", res: "sch" },
+        { id: "48d", title: "LES · R63–R65 End-of-reading questions", desc: "Securitization and MBS practice questions", res: "les" },
+      ]},
+      { date: "Thu Jul 24", label: "R66–R68 Derivatives Intro", tasks: [
+        { id: "49a", title: "Schweser R66 · Module 66.1", desc: "Definition of derivative, OTC vs exchange-traded markets, clearing and settlement", res: "sch" },
+        { id: "49b", title: "Schweser R67 · Module 67.1", desc: "Forwards and futures: features, differences, long/short payoffs, delivery", res: "sch" },
+        { id: "49c", title: "Schweser R67 · Module 67.2", desc: "Swaps structure and uses; options (calls/puts): intrinsic value, payoff at expiration, profit", res: "sch" },
+        { id: "49d", title: "Schweser R68 · Module 68.1", desc: "Benefits (risk management, liquidity) and risks (leverage, counterparty) of derivatives", res: "sch" },
+      ]},
+      { date: "Fri Jul 25", label: "FI Topic Quiz + Review", tasks: [
+        { id: "50a", title: "LES · Fixed Income Topic Quiz", desc: "Full FI topic quiz on LES — critical given LES-first approach", res: "les" },
+        { id: "50b", title: "QuickSheet · FI + Derivatives preview", desc: "Read Fixed Income and begin Derivatives section on QuickSheet", res: "qs" },
+        { id: "50c", title: "Ethics review (LES)", desc: "Read Ethics Standard IV in LES (Duties to Employers)", res: "les" },
+      ]},
+    ]
+  },
+  {
+    id: 11, label: "Wk 11", color: "coral", phase: "Phase 3 — Markets & Instruments",
+    dates: "Jul 28–Aug 1", topic: "Derivatives + Book 3 Review", resource: "both",
+    tags: ["deriv"], phaseColor: "#C05030",
+    days: [
+      { date: "Mon Jul 28", label: "R69–R71 Derivative Pricing", tasks: [
+        { id: "51a", title: "Schweser R69 · Module 69.1", desc: "Arbitrage concept, replication, cost-of-carry model, relationship between spot and forward prices", res: "sch" },
+        { id: "51b", title: "LES · R70 · Module 70.1", desc: "Forward contract value and price at initiation, during life, and at expiry — work all LES examples", res: "les" },
+        { id: "51c", title: "Schweser R71 · Module 71.1", desc: "Futures vs forward pricing differences, mark-to-market, daily settlement", res: "sch" },
+        { id: "51d", title: "LES · R69–R71 End-of-reading questions", desc: "Derivative pricing practice questions", res: "les" },
+      ]},
+      { date: "Tue Jul 29", label: "R72–R73 Swaps & Options Pricing", tasks: [
+        { id: "52a", title: "LES · R72 · Module 72.1", desc: "Interest rate swap valuation: fixed vs floating legs, swap rate calculation — work LES examples", res: "les" },
+        { id: "52b", title: "LES · R73 · Module 73.1", desc: "Option value components (time value + intrinsic value), factors affecting option prices, bounds", res: "les" },
+        { id: "52c", title: "LES · R72–R73 End-of-reading questions", desc: "Swap and option pricing practice questions", res: "les" },
+      ]},
+      { date: "Wed Jul 30", label: "R74–R75 Put-Call Parity & Binomial", tasks: [
+        { id: "53a", title: "LES · R74 · Module 74.1", desc: "Put-call parity: derivation, applications, synthetic positions — work all LES examples", res: "les" },
+        { id: "53b", title: "LES · R75 · Module 75.1", desc: "One-period binomial model: up/down factors, risk-neutral probability, option valuation", res: "les" },
+        { id: "53c", title: "LES · R74–R75 End-of-reading questions", desc: "Put-call parity and binomial model practice", res: "les" },
+        { id: "53d", title: "Schweser R74–R75 Key Concepts", desc: "Review Schweser's concise formula summaries", res: "sch" },
+      ]},
+      { date: "Thu Jul 31", label: "Derivatives Topic Quiz", tasks: [
+        { id: "54a", title: "LES · Derivatives Topic Quiz", desc: "Full Derivatives topic quiz on LES", res: "les" },
+        { id: "54b", title: "QuickSheet · Derivatives section", desc: "Full read of Derivatives formulas on QuickSheet", res: "qs" },
+        { id: "54c", title: "Ethics review (LES)", desc: "Read Ethics Standard V in LES (Investment Analysis, Recommendations & Actions)", res: "les" },
+      ]},
+      { date: "Fri Aug 1", label: "Book 3 Full Review", tasks: [
+        { id: "55a", title: "Weak FI/Derivatives modules revisit", desc: "Re-read any modules below 70% from Weeks 9–11", res: "les" },
+        { id: "55b", title: "QuickSheet · FI + Derivatives full scan", desc: "Read both FI and Derivatives sections on QuickSheet", res: "qs" },
+        { id: "55c", title: "Note weak areas for final review", desc: "Update your list of weak topics for Phase 6 review", res: "both" },
+      ]},
+    ]
+  },
+  {
+    id: 12, label: "Wk 12", color: "green", phase: "Phase 4 — AI, PM & Ethics",
+    dates: "Aug 4–8", topic: "Alt Investments + Portfolio Mgmt", resource: "sch",
+    tags: ["ai", "pm"], phaseColor: "#3A8E5C",
+    days: [
+      { date: "Mon Aug 4", label: "R76–R78 Alternative Investments I", tasks: [
+        { id: "56a", title: "Schweser R76 · Module 76.1", desc: "Alt investment features, categories; direct vs co-investment vs fund investment; compensation structures (2-and-20)", res: "sch" },
+        { id: "56b", title: "Schweser R77 · Module 77.1", desc: "Alt investment performance appraisal; return calculation before/after fees (carried interest, clawback)", res: "sch" },
+        { id: "56c", title: "Schweser R78 · Module 78.1", desc: "Private equity (venture, buyout), private debt; diversification benefits", res: "sch" },
+        { id: "56d", title: "LES · R76–R78 End-of-reading questions", desc: "Alternative investments practice questions", res: "les" },
+      ]},
+      { date: "Tue Aug 5", label: "R79–R82 Real Estate, Natural Resources, Hedge Funds, Digital Assets", tasks: [
+        { id: "57a", title: "Schweser R79 · Module 79.1–79.2", desc: "Real estate features and investment characteristics; infrastructure features and investment characteristics", res: "sch" },
+        { id: "57b", title: "Schweser R80 · Module 80.1", desc: "Farmland, timberland, commodities — sources of return and risk", res: "sch" },
+        { id: "57c", title: "Schweser R81 · Module 81.1", desc: "Hedge fund strategies (L/S equity, global macro, relative value, event-driven)", res: "sch" },
+        { id: "57d", title: "Schweser R82 · Modules 82.1–82.2", desc: "Distributed ledger technology, blockchain, cryptocurrencies, digital asset characteristics", res: "sch" },
+        { id: "57e", title: "LES · R79–R82 End-of-reading questions", desc: "Alternative investments practice questions", res: "les" },
+      ]},
+      { date: "Wed Aug 6", label: "R83–R84 Portfolio Risk & Return", tasks: [
+        { id: "58a", title: "Schweser R83 · Modules 83.1–83.4", desc: "Historical risk/return; risk aversion; portfolio standard deviation (2-asset); efficient frontier; minimum variance portfolio", res: "sch" },
+        { id: "58b", title: "LES · R83 worked examples", desc: "Use LES for efficient frontier and minimum variance portfolio construction examples", res: "les" },
+        { id: "58c", title: "Schweser R84 · Modules 84.1–84.2", desc: "Systematic vs unsystematic risk, beta, CAPM, SML, Sharpe ratio, Treynor measure, Jensen's alpha", res: "sch" },
+        { id: "58d", title: "LES · R83–R84 End-of-reading questions", desc: "Portfolio theory and CAPM practice questions", res: "les" },
+      ]},
+      { date: "Thu Aug 7", label: "R85–R88 Portfolio Management", tasks: [
+        { id: "59a", title: "Schweser R85 · Modules 85.1–85.2", desc: "Portfolio management process (planning, execution, feedback), pooled investments (ETFs, mutual funds)", res: "sch" },
+        { id: "59b", title: "Schweser R86 · Module 86.1", desc: "Investment Policy Statement (IPS), return and risk objectives, ESG integration approaches", res: "sch" },
+        { id: "59c", title: "Schweser R87 · Modules 87.1–87.2", desc: "Behavioral biases: cognitive errors (conservatism, confirmation, availability), emotional biases (loss aversion, overconfidence)", res: "sch" },
+        { id: "59d", title: "Schweser R88 · Module 88.1", desc: "Risk management framework, risk governance, risk budgeting, financial vs non-financial risks, methods for modifying risk", res: "sch" },
+        { id: "59e", title: "LES · R85–R88 End-of-reading questions", desc: "Portfolio management practice questions", res: "les" },
+      ]},
+      { date: "Fri Aug 8", label: "Alt Inv + PM Review", tasks: [
+        { id: "60a", title: "LES · Alt Investments Topic Quiz", desc: "Full Alternative Investments topic quiz on LES", res: "les" },
+        { id: "60b", title: "LES · Portfolio Mgmt Topic Quiz", desc: "Full Portfolio Management topic quiz on LES", res: "les" },
+        { id: "60c", title: "QuickSheet · AI + PM section", desc: "Read Alt Investments and Portfolio Management formulas on QuickSheet", res: "qs" },
+      ]},
+    ]
+  },
+  {
+    id: 13, label: "Wk 13", color: "green", phase: "Phase 4 — AI, PM & Ethics",
+    dates: "Aug 11–15", topic: "Ethics + Book 4 Review", resource: "les",
+    tags: ["eth"], phaseColor: "#3A8E5C",
+    days: [
+      { date: "Mon Aug 11", label: "R89–R90 Ethics & Code of Ethics", tasks: [
+        { id: "61a", title: "LES · R89 · Module 89.1", desc: "Ethics definition, code of ethics purpose, professions and trust, fiduciary vs suitability standard, ethical decision-making framework", res: "les" },
+        { id: "61b", title: "LES · R90 · Module 90.1", desc: "CFA Professional Conduct Program, Code of Ethics (6 components), Standards I–VII (7 standards, 23 subsections)", res: "les" },
+        { id: "61c", title: "LES · R89–R90 End-of-reading questions", desc: "Ethics and Code practice questions", res: "les" },
+        { id: "61d", title: "Schweser R89–R90 Key Concepts", desc: "Review Schweser summaries to confirm key memorisation points", res: "sch" },
+      ]},
+      { date: "Tue Aug 12", label: "R91 Standards I–IV Guidance", tasks: [
+        { id: "62a", title: "LES · R91 · Modules 91.1–91.3", desc: "Standard I (Professionalism): Knowledge of Law, Independence, Misrepresentation, Misconduct; Standard II (Market Integrity)", res: "les" },
+        { id: "62b", title: "LES · R91 · Modules 91.4–91.5", desc: "Standard III (Duties to Clients): Loyalty/Prudence/Care, Fair Dealing, Suitability, Performance Presentation, Confidentiality", res: "les" },
+        { id: "62c", title: "LES · R91 · Module 91.6", desc: "Standard IV (Duties to Employers): Loyalty, additional compensation, supervisors", res: "les" },
+        { id: "62d", title: "LES · R91 Module quiz answers", desc: "Review all module quiz answers and case study explanations", res: "les" },
+      ]},
+      { date: "Wed Aug 13", label: "R91 Standards V–VII Guidance", tasks: [
+        { id: "63a", title: "LES · R91 · Module 91.7", desc: "Standard V (Investment Analysis): Diligence, communication, record retention", res: "les" },
+        { id: "63b", title: "LES · R91 · Module 91.8", desc: "Standard VI (Conflicts of Interest): Disclosure, priority of transactions, referral fees", res: "les" },
+        { id: "63c", title: "LES · R91 · Module 91.9", desc: "Standard VII (CFA Responsibilities): Conduct as candidates, reference to CFA designation", res: "les" },
+        { id: "63d", title: "LES · R91 End-of-reading questions", desc: "Full Standards guidance practice questions — very high exam weight", res: "les" },
+      ]},
+      { date: "Thu Aug 14", label: "R92–R93 GIPS + Ethics Application", tasks: [
+        { id: "64a", title: "LES · R92 · Module 92.1", desc: "GIPS: why created, who must comply, composites, discretionary portfolios, independent verification", res: "les" },
+        { id: "64b", title: "LES · R93 · Module 93.1", desc: "Ethics Application: evaluate case studies against Code and Standards — work all LES cases carefully", res: "les" },
+        { id: "64c", title: "LES · R92–R93 End-of-reading questions", desc: "GIPS and ethics application practice questions", res: "les" },
+      ]},
+      { date: "Fri Aug 15", label: "Ethics Topic Quiz + Book 4 Review", tasks: [
+        { id: "65a", title: "LES · Ethical Standards Topic Quiz", desc: "Full Ethics topic quiz on LES — read each question carefully; this is the highest-weight topic", res: "les" },
+        { id: "65b", title: "QuickSheet · Ethics section", desc: "Read Ethics and GIPS on QuickSheet", res: "qs" },
+        { id: "65c", title: "Book 4 weak areas revisit", desc: "Revisit any Alt Inv, PM or Ethics modules below 70%", res: "les" },
+      ]},
+    ]
+  },
+  {
+    id: 14, label: "Wk 14", color: "slate", phase: "Phase 5 — Final Review",
+    dates: "Aug 18–22", topic: "Full Curriculum Review", resource: "les",
+    tags: ["rev"], phaseColor: "#7A756C",
+    days: [
+      { date: "Mon Aug 18", label: "Review: Quant + Economics", tasks: [
+        { id: "66a", title: "QuickSheet · Quant Methods full read", desc: "Read and annotate all Quant formulas on QuickSheet", res: "qs" },
+        { id: "66b", title: "QuickSheet · Economics full read", desc: "Read and annotate Economics and Corporate Issuers on QuickSheet", res: "qs" },
+        { id: "66c", title: "LES: Redo all weak Quant/Eco questions", desc: "Pull up your weakest LES topic areas from Weeks 1–4 and redo questions", res: "les" },
+      ]},
+      { date: "Tue Aug 19", label: "Review: FSA + Equity", tasks: [
+        { id: "67a", title: "QuickSheet · FSA ratios and formulas", desc: "Full QuickSheet FSA section with focus on ratios, DuPont, and cash flows", res: "qs" },
+        { id: "67b", title: "LES: Redo weak FSA questions", desc: "Revisit lowest-scoring FSA LES topic quiz questions", res: "les" },
+        { id: "67c", title: "Schweser FSA/Equity weak modules", desc: "Re-read 2–3 modules from FSA/Equity that still feel unclear", res: "sch" },
+      ]},
+      { date: "Wed Aug 20", label: "Review: Fixed Income", tasks: [
+        { id: "68a", title: "QuickSheet · Fixed Income full read", desc: "Full QuickSheet FI section: pricing, duration, convexity, yield measures, credit", res: "qs" },
+        { id: "68b", title: "LES: Redo weak FI calculations", desc: "Redo the FI questions you got wrong — focus on duration/convexity calculations", res: "les" },
+        { id: "68c", title: "Schweser FI weak modules", desc: "Re-read 2–3 most challenging FI modules", res: "sch" },
+      ]},
+      { date: "Thu Aug 21", label: "Review: Derivatives + AI/PM", tasks: [
+        { id: "69a", title: "QuickSheet · Derivatives + AI/PM", desc: "Full QuickSheet Derivatives and Portfolio Management sections", res: "qs" },
+        { id: "69b", title: "LES: Redo weak Derivatives questions", desc: "Revisit derivatives LES topic quiz weak areas", res: "les" },
+        { id: "69c", title: "LES: PM and Alt Inv weak areas", desc: "Revisit Portfolio Management LES topic quiz weak spots", res: "les" },
+      ]},
+      { date: "Fri Aug 22", label: "Review: Ethics (full re-read)", tasks: [
+        { id: "70a", title: "LES · Re-read R91 Standards guidance", desc: "Full re-read of all 9 Guidance modules in LES — highest exam weight topic", res: "les" },
+        { id: "70b", title: "LES · Re-read R93 Ethics Application", desc: "Work through all R93 ethics cases again; note any you still find ambiguous", res: "les" },
+        { id: "70c", title: "QuickSheet · Ethics full read", desc: "Ethics and GIPS section on QuickSheet", res: "qs" },
+      ]},
+    ]
+  },
+  {
+    id: 15, label: "Wk 15", color: "slate", phase: "Phase 5 — Final Review",
+    dates: "Aug 25–28", topic: "Mock Exams + Final Prep", resource: "les",
+    tags: ["mock"], phaseColor: "#7A756C",
+    days: [
+      { date: "Mon Aug 25", label: "Full LES Mock Exam #1", tasks: [
+        { id: "71a", title: "LES · Full mock exam — Morning session", desc: "Timed: 90 questions, 135 minutes. No notes. Simulate exam conditions.", res: "les" },
+        { id: "71b", title: "LES · Full mock exam — Afternoon session", desc: "Timed: 90 questions, 135 minutes. No notes. Simulate exam conditions.", res: "les" },
+      ]},
+      { date: "Tue Aug 26", label: "Mock Exam #1 Review", tasks: [
+        { id: "72a", title: "Detailed review of all wrong answers", desc: "For every wrong answer: understand WHY it was wrong, not just the correct answer", res: "les" },
+        { id: "72b", title: "Update weak topic list", desc: "List the 5 topics with most mistakes — prioritise for tomorrow", res: "both" },
+        { id: "72c", title: "QuickSheet · Weak topic scan", desc: "Re-read QuickSheet sections for your top 5 weak topics", res: "qs" },
+      ]},
+      { date: "Wed Aug 27", label: "Full LES Mock Exam #2", tasks: [
+        { id: "73a", title: "LES · Full mock exam #2 — Morning session", desc: "Timed: 90 questions, 135 minutes. Focus on your weak areas from Mock #1.", res: "les" },
+        { id: "73b", title: "LES · Full mock exam #2 — Afternoon session", desc: "Timed: 90 questions, 135 minutes.", res: "les" },
+        { id: "73c", title: "Brief post-exam review", desc: "Light review of any glaring mistakes — don't over-study tonight", res: "les" },
+      ]},
+      { date: "Thu Aug 28", label: "Final Preparation", tasks: [
+        { id: "74a", title: "QuickSheet · Full final read-through", desc: "Read the entire 2026 Schweser QuickSheet cover to cover — final formula pass", res: "qs" },
+        { id: "74b", title: "LES · Ethics Standards re-read", desc: "Re-read Ethics Standards I–VII guidance one final time in LES", res: "les" },
+        { id: "74c", title: "Light review of GIPS (Schweser)", desc: "Quick Schweser review of R92 GIPS key concepts", res: "sch" },
+        { id: "74d", title: "Prepare logistics for exam day", desc: "Confirm exam location, required documents, calculator, rest well tonight", res: "both" },
+      ]},
+    ]
+  },
+];
+
+// ═══════════════════════════════════════════════════════════
+// STATE — in-memory (persists while page is open)
+// ═══════════════════════════════════════════════════════════
+let completedTasks = {};
+let notes = {};
+let currentWeek = null;
+let currentDayIdx = 0;
+
+function saveState() {
+  try {
+    const state = { completedTasks, notes };
+    localStorage.setItem('cfa_tracker', JSON.stringify(state));
+  } catch(e) {}
+}
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem('cfa_tracker');
+    if (raw) {
+      const s = JSON.parse(raw);
+      completedTasks = s.completedTasks || {};
+      notes = s.notes || {};
+    }
+  } catch(e) {}
+}
+
+// ═══════════════════════════════════════════════════════════
+// TABS
+// ═══════════════════════════════════════════════════════════
+function showTab(name) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event.target.classList.add('active');
+  if (name === 'schedule') updateStats();
+}
+
+// ═══════════════════════════════════════════════════════════
+// SCHEDULE TAB
+// ═══════════════════════════════════════════════════════════
+function buildSchedule() {
+  const grid = document.getElementById('schedule-grid');
+  let phaseGroups = {};
+  WEEKS.forEach(w => {
+    if (!phaseGroups[w.phase]) phaseGroups[w.phase] = [];
+    phaseGroups[w.phase].push(w);
+  });
+
+  const resLabel = {les:'LES-first', sch:'Schweser-first', both:'Both equally'};
+  const resClass = {les:'les', sch:'sch', both:'both'};
+
+  let html = '';
+  for (const [phase, weeks] of Object.entries(phaseGroups)) {
+    const color = weeks[0].phaseColor;
+    const firstDate = weeks[0].dates;
+    const lastDate = weeks[weeks.length-1].dates;
+    html += `<div class="phase">
+      <div class="phase-header">
+        <div class="phase-bar" style="background:${color}"></div>
+        <div class="phase-name">${phase}</div>
+        <div class="phase-range">${firstDate} – ${lastDate.split('–')[1] || lastDate}</div>
+      </div>
+      <div class="week-grid">`;
+
+    weeks.forEach(w => {
+      const totalTasks = w.days.reduce((a,d) => a + d.tasks.length, 0);
+      const doneTasks = w.days.reduce((a,d) => a + d.tasks.filter(t => completedTasks[t.id]).length, 0);
+      const pct = totalTasks ? Math.round(doneTasks/totalTasks*100) : 0;
+      const tagHtml = w.tags.map(t => `<span class="tag tag-${t}">${t.replace('fi','Fixed Income').replace('eco','Economics').replace('quant','Quant').replace('fsa','FSA').replace('equity','Equity').replace('deriv','Derivatives').replace('ai','Alt Inv').replace('pm','Port. Mgmt').replace('eth','Ethics').replace('rev','Review').replace('mock','Mock Exams')}</span>`).join('');
+      html += `<div class="week-card c-${w.color}" onclick="openWeek(${w.id})">
+        <div class="wk-num">${w.label}</div>
+        <div class="wk-dates">${w.dates}</div>
+        <div class="wk-topic">${w.topic}</div>
+        <div class="wk-days">${w.days.length} study days · ${totalTasks} tasks</div>
+        <div class="wk-prog"><div class="wk-prog-bar" style="width:${pct}%;background:${pct===100?'var(--done)':color}"></div></div>
+        <div class="tags">${tagHtml}<span class="tag tag-${resClass[w.resource]}">${resLabel[w.resource]}</span></div>
+      </div>`;
+    });
+    html += '</div></div>';
+  }
+  grid.innerHTML = html;
+}
+
+function updateStats() {
+  let allTasks = WEEKS.flatMap(w => w.days.flatMap(d => d.tasks));
+  let done = allTasks.filter(t => completedTasks[t.id]).length;
+  let allDays = WEEKS.flatMap(w => w.days);
+  let daysDone = allDays.filter(d => d.tasks.every(t => completedTasks[t.id])).length;
+  let pct = Math.round(done/allTasks.length*100);
+  document.getElementById('prog-bar').style.width = pct + '%';
+  document.getElementById('prog-pct').textContent = pct + '%';
+  document.getElementById('stat-done').textContent = daysDone;
+  document.getElementById('stat-tasks').textContent = done;
+  buildSchedule();
+}
+
+// ═══════════════════════════════════════════════════════════
+// TRACKER TAB
+// ═══════════════════════════════════════════════════════════
+function buildWeekSelector() {
+  const sel = document.getElementById('week-selector');
+  sel.innerHTML = WEEKS.map(w => {
+    const allTasks = w.days.flatMap(d => d.tasks);
+    const isDone = allTasks.every(t => completedTasks[t.id]);
+    return `<button class="ws-btn ${isDone?'completed':''}" onclick="openWeek(${w.id})">${w.label}: ${w.topic.substring(0,18)}${w.topic.length>18?'…':''}</button>`;
+  }).join('');
+}
+
+function openWeek(weekId) {
+  currentWeek = WEEKS.find(w => w.id === weekId);
+  currentDayIdx = 0;
+  showTab('tracker');
+  document.querySelectorAll('.tab-btn')[1].click();
+  buildWeekSelector();
+  document.querySelectorAll('.ws-btn').forEach((b,i) => {
+    if (WEEKS[i].id === weekId) b.classList.add('active');
+  });
+  renderDay();
+}
+
+function renderDay() {
+  if (!currentWeek) return;
+  const day = currentWeek.days[currentDayIdx];
+  const dayKey = currentWeek.id + '_' + currentDayIdx;
+  const savedNote = notes[dayKey] || '';
+  const doneTasks = day.tasks.filter(t => completedTasks[t.id]).length;
+  const pct = Math.round(doneTasks/day.tasks.length*100);
+
+  const resLabel = {les:'LES', sch:'Schweser', both:'Both', qs:'QuickSheet'};
+  const resColor = {les:'background:var(--les-light);color:var(--les)', sch:'background:var(--blue-light);color:var(--blue)', both:'background:var(--surface2);color:var(--slate)', qs:'background:var(--amber-light);color:var(--amber)'};
+
+  const tasksHtml = day.tasks.map(t => {
+    const done = completedTasks[t.id];
+    return `<div class="task-item ${done?'done':''}" onclick="toggleTask('${t.id}')">
+      <div class="task-check"><span class="task-check-mark">✓</span></div>
+      <div class="task-content">
+        <div class="task-title">${t.title}<span class="task-badge" style="${resColor[t.res]}">${resLabel[t.res]}</span></div>
+        <div class="task-desc">${t.desc}</div>
+      </div>
+    </div>`;
+  }).join('');
+
+  const phaseColor = currentWeek.phaseColor;
+
+  document.getElementById('day-view').innerHTML = `
+    <div class="day-header">
+      <button class="day-nav" onclick="navDay(-1)" ${currentDayIdx===0?'disabled style="opacity:0.3"':''}>← Prev</button>
+      <div class="day-title">
+        <div class="day-title-main">${day.date}</div>
+        <div class="day-title-sub">${currentWeek.topic} · Day ${currentDayIdx+1} of ${currentWeek.days.length}</div>
+      </div>
+      <button class="day-nav" onclick="navDay(1)" ${currentDayIdx===currentWeek.days.length-1?'disabled style="opacity:0.3"':''}>Next →</button>
+    </div>
+    <div class="day-body">
+      <div class="day-meta">
+        <span class="day-badge" style="background:${phaseColor}20;color:${phaseColor}">${currentWeek.phase}</span>
+        <span class="day-badge" style="background:var(--surface2);color:var(--text-muted)">${day.label}</span>
+        <span class="day-badge" style="background:${pct===100?'var(--done-bg)':'var(--surface2)'};color:${pct===100?'var(--done)':'var(--text-muted)'}">${doneTasks}/${day.tasks.length} tasks complete</span>
+      </div>
+      <div class="task-list">${tasksHtml}</div>
+      <div class="day-progress">
+        <span class="dp-label">Day progress</span>
+        <div class="dp-bar-outer"><div class="dp-bar-inner" id="dp-bar" style="width:${pct}%"></div></div>
+        <span class="dp-pct" id="dp-pct">${pct}%</span>
+      </div>
+      <div class="notes-area">
+        <div class="notes-label">Study notes / questions to revisit</div>
+        <textarea class="notes-input" id="notes-input" placeholder="e.g. Struggled with Macaulay duration formula — revisit tomorrow">${savedNote}</textarea>
+        <button class="save-btn" onclick="saveNote()">Save note</button>
+        <span class="save-note" id="save-note-confirm">✓ Saved</span>
+      </div>
+    </div>`;
+}
+
+function navDay(dir) {
+  currentDayIdx = Math.max(0, Math.min(currentWeek.days.length-1, currentDayIdx + dir));
+  renderDay();
+}
+
+function toggleTask(taskId) {
+  completedTasks[taskId] = !completedTasks[taskId];
+  saveState();
+  renderDay();
+  updateStats();
+}
+
+function saveNote() {
+  const dayKey = currentWeek.id + '_' + currentDayIdx;
+  notes[dayKey] = document.getElementById('notes-input').value;
+  saveState();
+  const confirm = document.getElementById('save-note-confirm');
+  confirm.style.display = 'inline';
+  setTimeout(() => confirm.style.display = 'none', 2000);
+}
+
+// ═══════════════════════════════════════════════════════════
+// EXPORT / IMPORT / RESET
+// ═══════════════════════════════════════════════════════════
+function exportProgress() {
+  const state = { completedTasks, notes, exportedAt: new Date().toISOString() };
+  const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(state))));
+  navigator.clipboard.writeText(encoded).then(() => {
+    const s = document.getElementById('exp-status');
+    s.textContent = '✓ Copied to clipboard!';
+    s.style.display = 'inline';
+    setTimeout(() => s.style.display = 'none', 3000);
+  }).catch(() => {
+    // fallback: show modal with text to copy
+    document.getElementById('export-code').value = encoded;
+    document.getElementById('export-modal').classList.add('open');
+  });
+}
+
+function openImport() {
+  document.getElementById('import-code').value = '';
+  document.getElementById('import-err').style.display = 'none';
+  document.getElementById('import-modal').classList.add('open');
+}
+
+function doImport() {
+  const raw = document.getElementById('import-code').value.trim();
+  const errEl = document.getElementById('import-err');
+  if (!raw) { errEl.textContent = 'Please paste your export code first.'; errEl.style.display = 'block'; return; }
+  try {
+    const decoded = JSON.parse(decodeURIComponent(escape(atob(raw))));
+    if (!decoded.completedTasks) throw new Error('Invalid format');
+    completedTasks = decoded.completedTasks;
+    notes = decoded.notes || {};
+    saveState();
+    closeModals();
+    buildWeekSelector();
+    updateStats();
+    if (currentWeek) renderDay();
+    const s = document.getElementById('exp-status');
+    s.textContent = '✓ Progress imported!';
+    s.style.display = 'inline';
+    setTimeout(() => s.style.display = 'none', 3000);
+  } catch(e) {
+    errEl.textContent = 'Invalid code — make sure you paste the full exported text.';
+    errEl.style.display = 'block';
+  }
+}
+
+function confirmReset() {
+  document.getElementById('reset-modal').classList.add('open');
+}
+
+function doReset() {
+  completedTasks = {};
+  notes = {};
+  saveState();
+  closeModals();
+  buildWeekSelector();
+  updateStats();
+  if (currentWeek) renderDay();
+  const s = document.getElementById('exp-status');
+  s.textContent = '↺ Progress reset.';
+  s.style.color = 'var(--coral)';
+  s.style.display = 'inline';
+  setTimeout(() => { s.style.display = 'none'; s.style.color = 'var(--done)'; }, 3000);
+}
+
+function closeModals() {
+  document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('open'));
+}
+
+// ═══════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════
+loadState();
+buildWeekSelector();
+buildSchedule();
+updateStats();
+</script>
+
+<!-- EXPORT MODAL (fallback when clipboard API unavailable) -->
+<div class="modal-overlay" id="export-modal" onclick="if(event.target===this)closeModals()">
+  <div class="modal">
+    <div class="modal-title">Export Progress</div>
+    <div class="modal-sub">Copy the entire code below and save it somewhere safe (notes app, email to yourself, etc.). Paste it back using the Import button to restore your progress.</div>
+    <textarea class="modal-code" id="export-code" readonly onclick="this.select()"></textarea>
+    <div class="modal-actions">
+      <button class="exp-btn" onclick="document.getElementById('export-code').select();document.execCommand('copy');closeModals()">Copy &amp; Close</button>
+      <button class="exp-btn primary" onclick="closeModals()">Done</button>
+    </div>
+  </div>
+</div>
+
+<!-- IMPORT MODAL -->
+<div class="modal-overlay" id="import-modal" onclick="if(event.target===this)closeModals()">
+  <div class="modal">
+    <div class="modal-title">Import Progress</div>
+    <div class="modal-sub">Paste your previously exported code below to restore your progress. This will overwrite your current progress.</div>
+    <textarea class="modal-code" id="import-code" placeholder="Paste your export code here…"></textarea>
+    <div class="modal-err" id="import-err"></div>
+    <div class="modal-actions">
+      <button class="exp-btn" onclick="closeModals()">Cancel</button>
+      <button class="exp-btn primary" onclick="doImport()">Import &amp; Restore</button>
+    </div>
+  </div>
+</div>
+
+<!-- RESET CONFIRM MODAL -->
+<div class="modal-overlay" id="reset-modal" onclick="if(event.target===this)closeModals()">
+  <div class="modal">
+    <div class="modal-title">Reset all progress?</div>
+    <div class="modal-sub">This will clear all completed tasks and notes. This cannot be undone — export your progress first if you want a backup.</div>
+    <div class="modal-actions">
+      <button class="exp-btn" onclick="closeModals()">Cancel</button>
+      <button class="exp-btn danger" onclick="doReset()">Yes, reset everything</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
